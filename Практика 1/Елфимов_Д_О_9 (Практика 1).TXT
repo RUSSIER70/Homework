@@ -1,0 +1,150 @@
+/*
+Студент: Елфимов Дмитрий Олегович
+Группа: БАСО-02-22
+Практика: 1
+Вариант: 9
+*/
+
+#include <iostream>
+#include <windows.h>
+#include <iomanip>
+#include <string>
+
+using namespace std;
+
+struct Date {
+	unsigned short day;
+	unsigned short month;
+	unsigned short year;
+};
+
+struct Line {
+	char Name[20];
+	char type[2];
+	double price{};
+	int min{};
+	struct Date date;
+};
+
+int Size(int Number) {
+	int size = 0;
+	while (Number > 0)
+	{
+		Number = Number / 10;
+		size++;
+	}
+	return size;
+}
+
+void DrawLine() {
+	for (int i = 0; i < 91; i++) {
+		cout << "-";
+	}
+}
+
+void DrawHats(int Number) {
+	switch (Number) {
+	case 1: cout << "\n|Прайс-лист" << setw(81) << "|\n"; break;
+	case 2:	cout << "\n|" << setw(20) << "Наименование товара" << setw(2) << '|';
+		cout << setw(11) << "Тип товара" << setw(2) << '|';
+		cout << setw(18) << "Цена за 1 шт (грн)" << setw(1) << "|";
+		cout << setw(23) << "Минимальное количество" << setw(2) << "|";
+		cout << setw(7) << "Дата" << setw(5) << "|\n"; break;
+	case 3: cout << "\n|Примечание: К - канцтовары, О - оргтехника";
+		for (int i = 0; i < 91 - (strlen("|Примечание: К - канцтовары, О - оргтехника") + 1); i++) {
+			cout << " ";
+		}
+		cout << "|\n"; break;
+	case 4: cout << "\n|" << setw(22) << '|';
+		cout << setw(13) << '|';
+		cout << setw(19) << "|";
+		cout << setw(25) << "|";
+		cout << setw(12) << "|\n"; break;
+	}
+}
+
+void PrintDate(unsigned short day, unsigned short month, unsigned short year) {
+	if (day < 10) {
+		cout << "0" << day;
+	}
+	else {
+		cout << day;
+	}
+	cout << ".";
+	if (month < 10) {
+		cout << "0" << month;
+	}
+	else {
+		cout << month;
+	}
+	cout << ".";
+	cout << year;
+}
+
+void PrintLine1(Line line) {
+	int PriceSize = Size(line.price);
+
+	int MinSize = Size(line.min);
+
+	cout << "\n|" << line.Name << setw(20 - (strlen(line.Name) - 2)) << "|";
+	cout << line.type << setw(11 - (strlen(line.type) - 2)) << "|";
+	cout << setw(18) << line.price << "|";
+	cout << line.min << setw(25 - MinSize) << "|";
+	PrintDate(line.date.day, line.date.month, line.date.year);
+	cout << setw(2) << "|\n";
+}
+
+int main()
+{
+	SetConsoleCP(1251);
+	SetConsoleOutputCP(1251);
+
+	int dayt, montht, yeart;
+
+	struct Line lines[4];
+	lines[0] = { "Папка","К", 4.75, 4, 3,7,2022 };
+	lines[1] = { "Бумага", "К" , 13.9, 10, 3,4,2021 };
+	lines[2] = { "Калькулятор","О", 411, 1, 4, 3, 2022 };
+
+
+	cout << "Введите дату в формате номер ДНЯ, номер МЕСЯЦА, номер ГОДА.\n";
+	cout << "Если указанная дата была введена с ошибкой или отсутствует в таблице, будет выведена исходная таблица без изменений.\n";
+	cout << ">>";
+
+	cin >> dayt >> montht >> yeart;
+
+	cout << fixed;
+
+	cout.precision(5);
+
+	
+
+	DrawLine();
+	DrawHats(1);
+	DrawLine();
+	DrawHats(2);
+	DrawLine();
+	if ((dayt == lines[0].date.day) && (montht == lines[0].date.month) && (yeart == lines[0].date.year)) {
+		DrawHats(4);
+	}
+	else {
+		PrintLine1(lines[0]);
+	}
+	DrawLine();
+	if ((dayt == lines[1].date.day) && (montht == lines[1].date.month) && (yeart == lines[1].date.year)) {
+		DrawHats(4);
+	}
+	else {
+		PrintLine1(lines[1]);
+	}
+	DrawLine();
+	if ((dayt == lines[2].date.day) && (montht == lines[2].date.month) && (yeart == lines[2].date.year)) {
+		DrawHats(4);
+	}
+	else {
+		PrintLine1(lines[2]);
+	}
+	DrawLine();
+	DrawHats(3);
+	DrawLine();
+}
